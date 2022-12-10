@@ -1,0 +1,133 @@
+{
+	"foundryvtt-dungen": {
+		"title": "DunGen",
+		"subtitle": "Procedural Dungeons and Caves Generator",
+		"settings": {
+			"scene_storage.name": "Scene Storage Folder",
+			"scene_storage.hint": "The folder in which to save generated dungeon and cave images to.",
+			"show_in_sidebar.name": "Show DunGen Button in Scene Sidebar",
+			"show_in_sidebar.hint": "When this setting is enabled, a button will be added to the header of the Scene Sidebar to open the DunGen Dialog.",
+			"patreon_token.name": "Patreon Token",
+			"patreon_token.hint": "This token is used to verify your patreon status and features for use in this module.",
+			"patreon": {
+				"tier": "Patreon Tier",
+				"features": "Patreon Features",
+				"expires": "Token Expires On"
+			}
+		},
+		"dialog": {
+			"scene": {
+				"name": "Scene Name",
+				"hint": "The Title of your Scene"
+			},
+			"folder": {
+				"name": "Folder",
+				"hint": "Select a folder to add the Scene to.",
+				"choices": {
+					"none": "None"
+				}
+			},
+			"seed": {
+				"name": "Seed",
+				"hint": "Leave Blank for Random Dungeon"
+			},
+			"theme": {
+				"name": "Theme",
+				"hint": "Theme - eight to choose from",
+				"choices": {
+					"original": "Original",
+					"ice_temple": "Ice Temple",
+					"stylized_gray": "Stylized Gray",
+					"black_white": "Paper White",
+					"stylized_white": "Stylized White",
+					"classic_blue": "Classic Blue",
+					"virtual_world": "Virtual World",
+					"mask": "Mask for Image Editors"
+				}
+			},
+			"gen_type": {
+				"name": "Generation Type",
+				"hint": "What would you like to generate?",
+				"dungeon": "Dungeon",
+				"cave": "Cave"
+			},
+			"max_size": {
+				"name": "Max Size",
+				"hint": "Maximum Size - Outcome can be smaller",
+				"choices": {
+					"120": "Huge",
+					"80": "Large",
+					"40": "Medium",
+					"16": "Small",
+					"6": "Tiny",
+					"4": "Mini",
+					
+					"50": "Large",
+					"30": "Small",
+					"20": "Tiny",
+					"12": "Mini"
+				}
+			},
+			"map_style": {
+				"name": "Cave Layout Style",
+				"hint": "The style in which gaves are generated and layed out.",
+				"choices": {
+					"l_area": "Large Area",
+					"l_rooms": "Large Rooms",
+					"s_rooms": "Small Rooms"
+				}
+			},
+			"tile_size": {
+				"name": "Tile Size",
+				"hint": "Tile Size - Higher Resolution (140px) Available to Patreon's",
+				"choices": {
+					"50": "Fantasy Grounds: 50px",
+					"70": "Standard: 70px",
+					"140": "High Resolution: 140px"
+				}
+			},
+			"corridor_density": {
+				"name": "Corridor Density",
+				"hint": "Few to Many"
+			},
+			"egress": {
+				"name": "Peripheral Egress",
+				"hint": "Attempt to generate a number of egress points for the cave."
+			},
+			"secret_rooms": {
+				"name": "Remove unconnected rooms",
+				"hint": "Remove any rooms not connected by a path."
+			},
+			"multi_level": {
+				"name": "Multi-Level Dungeons",
+				"hint": "Generate Dungeons with Stairs"
+			},
+			"trap": {
+				"name": "Special Rooms",
+				"hint": "Generate Special Rooms. This feature is currently in Beta."
+			},
+			"green_path": {
+				"name": "Create Foundry Walls",
+				"hint": "Automatically add walls to the generated dungeon. Patreon only Feature."
+			},
+			"map_details": {
+				"seed_string": "Seed",
+				"file_size": "File Size",
+				"max_tile_size": "Max Tile Size",
+				"pixel_size": "Pixel Size"
+			},
+			"buttons": {
+				"generate": "Generate",
+				"building": "Building Map",
+				"create": "Create Scene"
+			}
+		},
+		"notifications": {
+			"requiresRegeneration": "You have made a change that would require you to regerate your dungeon/cave before you are able to create this scene. Undoing that change will re-enable the create scene button.",
+			"invalid_token_data": "There was an error processing your Patreon Token, please go to <a href='https://ttrpg.ink/fvtt/'>https://ttrpg.ink/fvtt/</a> to get a new token.",
+			"8k_warning": "Maps above 8k resolution may cause issues for users with low-end hardware.",
+			"16k_warning": "Maps above 16k resolution may cause the scene image to be rendered as a black square. Its recommended to generate this map with a Tile Size of 70px for best results. Copy the seed string above and use as the seed when generating a new map to keep this same map at a smaller Tile Size.",
+			"max_texture_size_error": "This map is greater than your Max Texture Size and will not be able to be rendered into a scene. Please regenerate this map at a smaller Tile Size."
+		}
+	}
+}

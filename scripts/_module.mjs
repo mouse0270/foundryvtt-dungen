@@ -1,5 +1,5 @@
 export class MODULE {
-	static ID = 'ID-OF-YOUR-MODULE';
+	static ID = 'foundryvtt-dungen';
 
 	static OPTIONS = {
 		background: '#7030A0',
@@ -16,6 +16,10 @@ export class MODULE {
 
 	static get TITLE() {
 		return this.localize('title');
+	}
+
+	static get API() {
+		return 'https://ttrpg.ink/api'
 	}
 
 	static localize(stringId, data = {}) {

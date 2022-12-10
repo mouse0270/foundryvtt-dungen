@@ -1,0 +1,361 @@
+#foundryvtt-dungen-dialog.processing .window-content {
+  position: relative;
+}
+#foundryvtt-dungen-dialog.processing .window-content::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-image: url(/modules/foundryvtt-dungen/images/DunGen_v2_1.gif);
+  background-size: cover;
+  z-index: 1;
+}
+#foundryvtt-dungen-dialog.processing .window-content::after {
+  content: "Building Scene... Please Wait";
+  font-size: var(--font-size-32);
+  position: absolute;
+  top: 0px;
+  z-index: 2;
+  width: 100%;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  text-shadow: 1px 1px black;
+}
+
+#foundryvtt-dungen-dialog .window-content > div {
+  display: grid;
+  font-size: var(--font-size-16);
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: 50px 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  min-height: 100%;
+}
+#foundryvtt-dungen-dialog .window-content > div header {
+  border-bottom: 2px solid var(--color-underline-header);
+  grid-area: 1/1/2/3;
+  margin: 0px -8px;
+}
+#foundryvtt-dungen-dialog .window-content > div header h1 {
+  border-width: 0px;
+  padding: 0rem 1rem;
+}
+#foundryvtt-dungen-dialog .window-content > div main {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: black;
+  border-right: 2px solid var(--color-underline-header);
+  border-top: 1px solid var(--color-underline-header);
+  border-top-right-radius: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  grid-area: 2/1/3/2;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-bottom: -8px;
+  margin-left: -8px;
+  max-height: 712px;
+  overflow: hidden;
+  -webkit-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out;
+  /* HANDLE THEMES */
+}
+#foundryvtt-dungen-dialog .window-content > div main:is([data-theme=black_white], [data-theme=stylized_white]) {
+  background-color: #f8f9fb;
+}
+#foundryvtt-dungen-dialog .window-content > div main:is([data-theme=classic_blue]) {
+  background-color: #a6deed;
+}
+#foundryvtt-dungen-dialog .window-content > div main img {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+#foundryvtt-dungen-dialog .window-content > div aside {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  grid-area: 2/2/3/3;
+  margin-right: -8px;
+  max-height: 704px;
+  overflow: overlay;
+  padding: 1rem 1rem 0.5rem 0.75rem;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group {
+  margin-bottom: 0.5rem;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group label {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group label > i {
+  margin-right: 0.25rem;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group label .form-fields {
+  margin-left: auto;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group.disabled {
+  opacity: 0.7;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group p {
+  margin: 0px;
+  opacity: 0.8;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group input:is([type=radio], [type=checkbox]):focus,
+#foundryvtt-dungen-dialog .window-content > div aside .form-group input[type=range]:focus::-webkit-slider-thumb,
+#foundryvtt-dungen-dialog .window-content > div aside .form-group input[type=range]:focus + input[type=number] {
+  -webkit-box-shadow: 0 0 10px var(--color-shadow-highlight);
+          box-shadow: 0 0 10px var(--color-shadow-highlight);
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group .form-fields.number-input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5rem;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group .form-fields.number-input input[type=number] {
+  -webkit-box-flex: 0;
+      -ms-flex: 0;
+          flex: 0;
+  min-width: 35px;
+  text-align: center;
+}
+@-webkit-keyframes shake {
+  10%, 90% {
+    -webkit-transform: translate3d(-1px, 0, 0);
+            transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    -webkit-transform: translate3d(2px, 0, 0);
+            transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    -webkit-transform: translate3d(-4px, 0, 0);
+            transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    -webkit-transform: translate3d(4px, 0, 0);
+            transform: translate3d(4px, 0, 0);
+  }
+}
+@keyframes shake {
+  10%, 90% {
+    -webkit-transform: translate3d(-1px, 0, 0);
+            transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    -webkit-transform: translate3d(2px, 0, 0);
+            transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    -webkit-transform: translate3d(-4px, 0, 0);
+            transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    -webkit-transform: translate3d(4px, 0, 0);
+            transform: translate3d(4px, 0, 0);
+  }
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group input[required].userInteracted:invalid {
+  -webkit-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+          animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  border-color: red;
+  color: red;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .form-group input[required].userInteracted:invalid + label {
+  color: red;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .input-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin-bottom: 0.5rem;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .input-group > label {
+  background-color: rgba(0, 0, 0, 0.05);
+  background-clip: padding-box;
+  border: 1px solid var(--color-border-light-tertiary);
+  border-radius: 0px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: var(--color-text-dark-primary);
+  display: block;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  height: auto;
+  line-height: 1.25;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  width: 100%;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .input-group > label:first-of-type {
+  border-radius: 3px 0px 0px 3px;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .input-group > label:last-of-type {
+  border-radius: 0px 3px 3px 0px;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .input-group input:is([type=radio], [type=checkbox]) {
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+  position: absolute;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .input-group input:is([type=radio], [type=checkbox]):focus + label {
+  -webkit-box-shadow: 0 0 10px var(--color-shadow-highlight);
+          box-shadow: 0 0 10px var(--color-shadow-highlight);
+}
+#foundryvtt-dungen-dialog .window-content > div aside .input-group input:is([type=radio], [type=checkbox]):checked + label {
+  border-color: var(--color-border-highlight-alt);
+}
+#foundryvtt-dungen-dialog .window-content > div aside .input-group input:is([type=radio], [type=checkbox]):disabled + label {
+  opacity: 0.7;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .button-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: auto;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .button-group #foundryvtt-dungen-btn-generate[data-tooltip] {
+  -webkit-box-flex: 0;
+      -ms-flex: 0;
+          flex: 0;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .button-group #foundryvtt-dungen-btn-create {
+  display: none;
+}
+#foundryvtt-dungen-dialog .window-content > div aside .button-group #foundryvtt-dungen-btn-generate[data-tooltip] + #foundryvtt-dungen-btn-create {
+  display: inline-block;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input,
+#foundryvtt-dungen-dialog .window-content > div .floating-labels select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: rgba(0, 0, 0, 0.05);
+  background-clip: padding-box;
+  border: 1px solid var(--color-border-light-tertiary);
+  border-radius: 3px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: var(--color-text-dark-primary);
+  display: block;
+  height: auto;
+  line-height: 1.25;
+  padding: 0.875rem 0.75rem;
+  width: 100%;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input::-webkit-input-placeholder {
+  color: transparent;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input::-moz-placeholder {
+  color: transparent;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:-ms-input-placeholder {
+  color: transparent;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input::-ms-input-placeholder {
+  color: transparent;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input::placeholder {
+  color: transparent;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:disabled {
+  opacity: 0.7;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:disabled:hover {
+  border: 1px solid var(--color-border-light-tertiary);
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels label {
+  line-height: normal;
+  pointer-events: none;
+  position: absolute;
+  top: 1rem;
+  left: 0.75rem;
+  -webkit-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels p {
+  margin: 0px;
+  opacity: 0.8;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:not(:-moz-placeholder-shown) {
+  padding: 1.25rem 0.75rem 0.5rem;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:not(:-ms-input-placeholder) {
+  padding: 1.25rem 0.75rem 0.5rem;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels select,
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:focus,
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:not(:placeholder-shown) {
+  padding: 1.25rem 0.75rem 0.5rem;
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:not(:-moz-placeholder-shown) + label {
+  font-size: var(--font-size-14);
+  opacity: 0.8;
+  transform: translate(0px, -0.75rem);
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:not(:-ms-input-placeholder) + label {
+  font-size: var(--font-size-14);
+  opacity: 0.8;
+  transform: translate(0px, -0.75rem);
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels select + label,
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:focus + label,
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:not(:placeholder-shown) + label {
+  font-size: var(--font-size-14);
+  opacity: 0.8;
+  -webkit-transform: translate(0px, -0.75rem);
+          transform: translate(0px, -0.75rem);
+}
+#foundryvtt-dungen-dialog .window-content > div .floating-labels input:disabled + label {
+  opacity: 0.8;
+}
+
+/* Client Settings */
+#client-settings section[data-tab=foundryvtt-dungen] .form-group.patreon-status {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}

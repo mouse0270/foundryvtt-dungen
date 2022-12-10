@@ -1,7 +1,7 @@
 {
-	"id": "module-template",
-	"title": "MODULE TITLE",
-	"description": "MODULE DESCRIPTION",
+	"id": "foundryvtt-dungen",
+	"title": "DunGen",
+	"description": "DunGen will generate high resolution dungeons ready to use in Foundry VTT.",
 	"version": "1.0.0",
 	"compatibility": {
 		"minimum": 10,
@@ -22,6 +22,18 @@
 				"ko-fi": "Mouse0270",
 				"reddit": "u/Mouse0270"
 			}
+		}, {
+			"name": "Nick S.",
+            "url": "https://dungeonchannel.com/",
+            "email": "dungeonchannelnick@gmail.com",
+            "discord": "Nick#2947",
+
+            "flags": {
+                "twitter": "DungeonChannel",
+                "patreon": "DungeonChannel",
+                "github": "PSNick",
+                "reddit": "u/PSanma"
+            }
 		}
 	],
 
@@ -34,7 +46,7 @@
 		"conflicts": []
 	},
 	"esmodules": [
-        "/scripts/init.mjs"
+        "/scripts/module.js"
 	],
 	"scripts": [],
 	"styles": [

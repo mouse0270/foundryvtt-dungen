@@ -1,0 +1,291 @@
+#foundryvtt-dungen-dialog.processing {
+	.window-content {
+		position: relative;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			background-image: url(/modules/foundryvtt-dungen/images/DunGen_v2_1.gif);
+			background-size: cover;
+			z-index: 1;
+		}
+		&::after {
+			content: 'Building Scene... Please Wait';
+			font-size: var(--font-size-32);
+			position: absolute;
+			top: 0px;
+			z-index: 2;
+			width: 100%;
+			color: white;
+			text-align: center;
+			padding: 1rem;
+			text-shadow: 1px 1px black;
+		}
+	}
+}
+
+#foundryvtt-dungen-dialog .window-content > div {
+	display: grid;
+	font-size: var(--font-size-16);
+	grid-template-columns: 1fr 300px;
+	grid-template-rows: 50px 1fr;
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+	min-height: 100%;
+
+	header {
+		border-bottom: 2px solid var(--color-underline-header);
+		grid-area: 1 / 1 / 2 / 3;
+		margin: 0px -8px;
+
+		h1 {
+			border-width: 0px;
+			padding: 0rem 1rem;
+		}
+	}
+	main {
+		align-items: center;
+		background: black;
+		border-right: 2px solid var(--color-underline-header);
+		border-top: 1px solid var(--color-underline-header);
+		border-top-right-radius: 8px;
+		display: flex;
+		grid-area: 2 / 1 / 3 / 2;
+		justify-content: center;
+		margin-bottom: -8px;
+		margin-left: -8px;
+		max-height: 712px;
+		overflow: hidden;
+		transition: background 0.2s ease-in-out;
+
+		/* HANDLE THEMES */
+		&:is([data-theme='black_white'], [data-theme='stylized_white']) {
+			background-color: #f8f9fb;
+		}
+
+		&:is([data-theme='classic_blue']) {
+			background-color: #a6deed;
+		}
+
+		img {
+			align-items: center;
+			display: flex;
+			position: relative;
+		}
+	}
+	aside {
+		display: flex;
+		flex-direction: column;
+		grid-area: 2 / 2 / 3 / 3;
+		margin-right: -8px;
+		max-height: 704px;
+		overflow: overlay;
+		padding: 1rem 1rem 0.5rem 0.75rem;
+
+		.form-group {
+			margin-bottom: 0.5rem;
+
+			label {
+				align-items: center;
+				display: flex;
+
+				> i {
+					margin-right: 0.25rem;
+				}
+
+				.form-fields {
+					margin-left: auto;
+				}
+			}
+
+			&.disabled {
+				opacity: 0.7;
+			}
+
+			p {
+				margin: 0px;
+				opacity: 0.8;
+			}
+
+			input:is([type="radio"], [type="checkbox"]):focus,
+			input[type="range"]:focus::-webkit-slider-thumb,
+			input[type="range"]:focus + input[type="number"] {
+				box-shadow: 0 0 10px var(--color-shadow-highlight);
+			}
+
+			.form-fields.number-input {
+				display: flex;
+				gap: 0.5rem;
+
+				input[type="number"] {
+					flex: 0;
+					min-width: 35px;
+    				text-align: center;
+				}
+			}
+
+			@keyframes shake {
+				10%, 90% {
+				  transform: translate3d(-1px, 0, 0);
+				}
+				
+				20%, 80% {
+				  transform: translate3d(2px, 0, 0);
+				}
+			  
+				30%, 50%, 70% {
+				  transform: translate3d(-4px, 0, 0);
+				}
+			  
+				40%, 60% {
+				  transform: translate3d(4px, 0, 0);
+				}
+			}
+			
+			input[required].userInteracted:invalid {
+				animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+				transform: translate3d(0, 0, 0);
+				border-color: red;
+				color: red;
+
+				& + label {
+					color: red;
+				}
+			}
+		}
+
+		.input-group {
+			display: flex;
+			flex-direction: row;
+			margin-bottom: 0.5rem;
+
+			> label {
+				background-color: rgba(0, 0, 0, 0.05);
+				background-clip: padding-box;
+				border: 1px solid var(--color-border-light-tertiary);
+				border-radius: 0px;
+				box-sizing: border-box;
+				color: var(--color-text-dark-primary);
+				display: block;
+				flex: 1;
+				height: auto;
+				line-height: 1.25;
+				padding: 0.5rem 0.75rem;
+				text-align: center;
+				width: 100%;
+			}
+
+			> label:first-of-type {
+				border-radius: 3px 0px 0px 3px;
+			}
+			> label:last-of-type {
+				border-radius: 0px 3px 3px 0px;
+			}
+
+			input:is([type="radio"], [type="checkbox"]) {
+				clip: rect(0, 0, 0, 0);
+				pointer-events: none;
+				position: absolute;
+
+				&:focus + label {
+					box-shadow: 0 0 10px var(--color-shadow-highlight);
+				}
+
+				&:checked + label {
+					border-color: var(--color-border-highlight-alt);
+				}
+
+				&:disabled + label {
+					opacity: 0.7;
+				}
+			}
+		}
+
+		.button-group {
+			display: flex;
+			margin-top: auto;
+
+			#foundryvtt-dungen-btn-generate[data-tooltip] {
+				flex: 0;
+			}
+
+			#foundryvtt-dungen-btn-create {
+				display: none;
+			}
+
+			#foundryvtt-dungen-btn-generate[data-tooltip] + #foundryvtt-dungen-btn-create {
+				display: inline-block;
+			}
+		}
+	}
+	.floating-labels {
+		align-items: flex-start;
+		flex-direction: column;
+		position: relative;
+		margin-bottom: 0.5rem;
+	}
+	.floating-labels input,
+	.floating-labels select {
+		appearance: none;
+		background-color: rgba(0, 0, 0, 0.05);
+		background-clip: padding-box;
+		border: 1px solid var(--color-border-light-tertiary);
+		border-radius: 3px;
+		box-sizing: border-box;
+		color: var(--color-text-dark-primary);
+		display: block;
+		height: auto;
+		line-height: 1.25;
+		padding: 0.875rem 0.75rem;
+		width: 100%;
+	}
+	.floating-labels input::placeholder {
+		color: transparent;
+	}
+	.floating-labels input:disabled {
+		opacity: 0.7;
+	}
+	.floating-labels input:disabled:hover {
+		border: 1px solid var(--color-border-light-tertiary);
+	}
+	.floating-labels label {
+		line-height: normal;
+		pointer-events: none;
+		position: absolute;
+		top: 1rem;
+		left: 0.75rem;
+		transform: translate(0px, 0px);
+		transition: all 0.2s ease-in-out;
+	}
+	.floating-labels p {
+		margin: 0px;
+		opacity: 0.8;
+	}
+	.floating-labels select,
+	.floating-labels input:focus,
+	.floating-labels input:not(:placeholder-shown) {
+		padding: 1.25rem 0.75rem 0.5rem;
+	}
+	.floating-labels select + label,
+	.floating-labels input:focus + label,
+	.floating-labels input:not(:placeholder-shown) + label {
+		font-size: var(--font-size-14);
+		opacity: 0.8;
+		transform: translate(0px, -0.75rem);
+	}
+	.floating-labels input:disabled + label {
+		opacity: 0.8;
+	}
+}
+
+/* Client Settings */
+#client-settings section[data-tab="foundryvtt-dungen"] {
+	.form-group.patreon-status {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}
