@@ -120,6 +120,14 @@
 				"generate": "Generate",
 				"building": "Building Map",
 				"create": "Create Scene"
+			},
+			"status": {
+				"start": "Getting Ready to Build your Scene...",
+				"getMap": "Getting Full Size Map Image from Server...",
+				"largeMap": "Looks like this is a really big map, please wait...",
+				"getWalls": "Thanks for supporting us on Patreon, Building your Scene Walls Now...",
+				"savingMap": "Saving Map to your Server...",
+				"creatingScene": "Creating a New Scene in Foundry VTT..."
 			}
 		},
 		"notifications": {

@@ -89,8 +89,8 @@ export default class DunGenTesting extends VueApplication {
 			patreon_token: MODULE.setting('patreon_token'),
 			seed: elem.querySelector('aside input[type="text"][name="seed"]').value?.length > 0 ? elem.querySelector('aside input[type="text"][name="seed"]').value : seed,
 			theme: elem.querySelector('aside select[name="theme"]').value ?? 'original',
-			max_size:  elem.querySelector('aside select[name="max_size"]').value ?? 16,
-			tile_size: 30, //elem.querySelector('aside select[name="tile_size"]').value ?? 70,
+			max_size: elem.querySelector('aside select[name="max_size"]').value ?? 16,
+			tile_size: elem.querySelector('aside select[name="tile_size"]').value ?? 70,
 			image_encoded: true
 		}
 
@@ -220,6 +220,22 @@ export default class DunGenTesting extends VueApplication {
 		elem.closest('main').addEventListener('wheel', this.imagePanZoom.zoomWithWheel);
 	}
 
+	async updateStatusText(string, delay=200) {
+		const elem = document.querySelector(`#${MODULE.ID}-dialog .window-content`);
+		const wait = async (ms) => await new Promise(resolve => setTimeout(resolve, ms));
+
+		if (elem.hasAttribute('data-status')) {
+			elem.classList.remove('animate-status-text-in');
+			await wait(delay);
+		}
+
+		if (!string) return;
+
+		elem.setAttribute('data-status', string);
+		elem.classList.add('animate-status-text-in');
+		await wait(delay);
+	}
+
 	async getMapFromAPI(options, callCount=0) {
 		return await fetch(`${MODULE.API}/fvtt_${this._vue.store.genType}/`, {
 			method: 'POST',
@@ -240,6 +256,7 @@ export default class DunGenTesting extends VueApplication {
 			} 
 			else{
 				ui.notifications.warn('DunGen is still building this map, please wait.');
+				this.updateStatusText(MODULE.localize('dialog.status.largeMap'));
 				return await this.getMapFromAPI(options, callCount);
 			} 
 		})
@@ -276,8 +293,20 @@ export default class DunGenTesting extends VueApplication {
 		this._vue.store.requiresRegeneration = false;
 		this._vue.store.mapDetails = false;
 
-		/////--------------------------------------
-		const response = await this.getMapFromAPI(this.generationOptions);
+		/////----
+		// Preview Generation Should be Smaller
+		const getTileSize = () => {
+			const mapSize = parseInt(elem.querySelector('aside select[name="max_size"]').value ?? 16);
+			const tileSize = parseInt(elem.querySelector('aside select[name="tile_size"]').value ?? 70);
+			
+			if (mapSize >= 40) return 30;
+			else if (mapSize < 40 && tileSize > 70) return 70;
+			else return tileSize;
+		}
+		const response = await this.getMapFromAPI(mergeObject(this.generationOptions, {
+			tile_size: getTileSize()
+		}, { inplace: false}));
+
 		if (typeof response === 'undefined') {
 			// Enable Inputs
 			this._vue.store.isDisabled = false;
@@ -321,7 +350,7 @@ export default class DunGenTesting extends VueApplication {
 			},
 			height: this._vue.store.mapDetails.pixel_size.height,
 			name: elem.querySelector('input[type="text"][name="name"').value,
-			width: this._vue.store.mapDetails.pixel_size.height,
+			width: this._vue.store.mapDetails.pixel_size.width,
 		};
 
 		if (elem.querySelector('aside select[name="folder"]').value.length > 0) {
@@ -342,6 +371,11 @@ export default class DunGenTesting extends VueApplication {
 	_createScene = async (event) => {
 		event.preventDefault();
 		const elem = event.target.closest(`#${MODULE.ID}-dialog`);
+		const status = elem.querySelector('.window-content');
+		
+		// Setup Processing
+		elem.classList.add('processing');
+		this.updateStatusText(MODULE.localize('dialog.status.start'));
 
 		// Disable Inputs
 		this._vue.store.isDisabled = true;
@@ -360,61 +394,45 @@ export default class DunGenTesting extends VueApplication {
 			this.sceneOptions.folder = game.folders.find(folder => folder.type === 'Scene' && folder.id == elem.querySelector('aside select[name="folder"]').value);
 		}
 
-		// Get Cave Texture
+		// Check if Map needs to be Called again.
+		const realTileSize = parseInt(elem.querySelector('aside select[name="tile_size"]').value ?? 70);
 		if (this._vue.store.genType == 'cave') {
-			this.sceneOptions.flags[MODULE.ID] = await this.getCaveTexture(this.generationOptions);
-			this.sceneOptions.background.src = `data:image/jpeg;charset=utf-8;base64,${this.sceneOptions.flags[MODULE.ID]?.image_encoded}`
+			this.updateStatusText(MODULE.localize('dialog.status.getMap'));
+			const response = await this.getMapFromAPI(mergeObject(this.generationOptions, { layout: false }, { inplace: false }));
+			this.sceneOptions.background.src = `data:image/jpeg;charset=utf-8;base64,${response.image_encoded}`;
+		}else if (this.generationOptions.max_size >= 40 || (this.generationOptions.max_size <= 16 && realTileSize > 70)) {
+			this.updateStatusText(MODULE.localize('dialog.status.getMap'));
+			const response = await this.getMapFromAPI(this.generationOptions);
+			this.sceneOptions.background.src = `data:image/jpeg;charset=utf-8;base64,${response.image_encoded}`;
+		}
+
+		// Get Map Walls
+		if (elem.querySelector('input[type="checkbox"][name="green_path"').checked) {
+			this.updateStatusText(MODULE.localize('dialog.status.getWalls'));
+			this.sceneOptions.walls = (await this.getMapFromAPI(mergeObject(this.generationOptions, { 
+				theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'original',
+				green_path: 'fvtt'
+			 }))).walls ?? [];
 		}
 
 		// Save Image to Server
+		this.updateStatusText(MODULE.localize('dialog.status.savingMap'));
 		const fileDetails = await this.createImage(this.sceneOptions.background.src, this.sceneOptions.flags[MODULE.ID].image_url);
 
 		// Update Background Image Source
 		this.sceneOptions.background.src = fileDetails?.path ?? '';
 
-		// Get Map Walls
-		if (elem.querySelector('input[type="checkbox"][name="green_path"').checked) {
-			this.sceneOptions.walls = await this.getWallData(this.generationOptions);
-		}
-
 		// Create Scene
+		this.updateStatusText(MODULE.localize('dialog.status.creatingScene'));
 		const scene = await Scene.create(mergeObject({ type: 'base' }, this.sceneOptions));
 
 		// Open Scene Config Window
 		await scene.sheet.render(true);
 
+		// Cleaning Up Processing Variables
+		elem.classList.remove('processing');
+		this.updateStatusText();
 		return await super.close();
-	}
-
-	async getWallData(generationOptions) {
-		return await fetch(`${MODULE.API}/fvtt_${this._vue.store.genType}/`, {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(mergeObject(generationOptions, { 
-				theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'original',
-				green_path: 'fvtt'
-			 }))
-		})
-		.then(response => response.json())
-		.then(response => response?.walls ?? []);
-	}
-
-	async getCaveTexture(generationOptions) {
-		return await fetch(`${MODULE.API}/cave/`, {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(mergeObject(generationOptions, { layout: false, }))
-		})
-		.then(response => response.json())
-		.then(response => {
-			return response;
-		});
 	}
 
 	async createSceneFolder(folderPath) {
