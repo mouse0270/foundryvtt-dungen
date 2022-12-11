@@ -41,7 +41,7 @@ jobs:
         flags.attributions: "https://github.com/${{github.repository}}/blob/master/ATTRIBUTIONS.md"
 
     # Create a zip file with all files required by the module to add to the release
-    - run: zip -r ./module.zip module.json LICENSE README.md CHANGELOG.md ATTRIBUTIONS.md styles/ scripts/bundle.min.mjs templates/ languages/
+    - run: zip -r ./module.zip module.json LICENSE README.md CHANGELOG.md ATTRIBUTIONS.md /images styles/ scripts/bundle.min.mjs templates/ languages/
 
     # Create a release for this specific version
     - name: Update Release with Files

@@ -86,7 +86,7 @@ Hooks.once('ready', async () => {
 				// Bind No Button to Opening a New DunGen Dialog
 				new DunGenTesting({
 					name: html[0].querySelector('input[name="name"]').value ?? '',
-					folder: html[0].querySelector('select[name="folder"]').value ?? ''
+					folder: html[0].querySelector('select[name="folder"]')?.value ?? ''
 				}).render(true)
 			},
 			rejectClose: false,
