@@ -15,6 +15,12 @@ jobs:
       id: get_version
       uses: battila7/get-version-action@v2
 
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+    - run: npm install
+    - run: npm run build
+
     # Substitute the Manifest and Download URLs in the module.json
     - name: Substitute Manifest and Download Links For Versioned Ones
       id: sub_manifest_link_version
@@ -33,12 +39,6 @@ jobs:
         bugs: "https://github.com/${{github.repository}}/issues"
         flags.allowBugReporter: true
         flags.attributions: "https://github.com/${{github.repository}}/blob/master/ATTRIBUTIONS.md"
-
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    - run: npm install
-    - run: npm run build
 
     # Create a zip file with all files required by the module to add to the release
     - run: zip -r ./module.zip module.json LICENSE README.md CHANGELOG.md ATTRIBUTIONS.md styles/ scripts/bundle.min.mjs templates/ languages/
