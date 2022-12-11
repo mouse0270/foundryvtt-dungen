@@ -46,7 +46,7 @@
 		"conflicts": []
 	},
 	"esmodules": [
-        "/scripts/module.mjs"
+        "/scripts/init.mjs"
 	],
 	"scripts": [],
 	"styles": [
