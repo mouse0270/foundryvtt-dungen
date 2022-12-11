@@ -25,12 +25,18 @@
   color: white;
   font-size: var(--font-size-28);
   font-style: italic;
+  opacity: 0;
   padding: 1rem;
   position: absolute;
   text-align: center;
   text-shadow: 1px 1px black;
+  -webkit-transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
   width: 100%;
   z-index: 2;
+}
+#foundryvtt-dungen-dialog.processing .window-content.animate-status-text-in::after {
+  opacity: 1;
 }
 
 #foundryvtt-dungen-dialog .window-content > div {
