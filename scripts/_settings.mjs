@@ -7,7 +7,7 @@ import { default as DunGenTesting } from './module.mjs';
 // FOUNDRY HOOKS -> SETUP
 Hooks.once('setup', async () => {
 	const getTokenData = async (patreon_token) => {
-		return await fetch(`${MODULE.API}fvtt_token/`, {
+		return await fetch(`${MODULE.API}/fvtt_token/`, {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
