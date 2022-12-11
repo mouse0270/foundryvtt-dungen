@@ -251,11 +251,10 @@ export default class DunGenTesting extends VueApplication {
 			// increase Call Count
 			callCount = callCount + 1;
 			if (callCount >= this.maxCallCount) {
-				ui.notifications.error('DunGen failed to generate this map, please try generating a new map.');
+				ui.notifications.error(MODULE.localize('notifications.error.getMapFromAPI'));
 				return undefined
 			} 
 			else{
-				ui.notifications.warn('DunGen is still building this map, please wait.');
 				this.updateStatusText(MODULE.localize('dialog.status.largeMap'));
 				return await this.getMapFromAPI(options, callCount);
 			} 
@@ -399,10 +398,12 @@ export default class DunGenTesting extends VueApplication {
 		if (this._vue.store.genType == 'cave') {
 			this.updateStatusText(MODULE.localize('dialog.status.getMap'));
 			const response = await this.getMapFromAPI(mergeObject(this.generationOptions, { layout: false }, { inplace: false }));
+			if (typeof response == 'undefined') return; // Kick out if unable to Get Image from API
 			this.sceneOptions.background.src = `data:image/jpeg;charset=utf-8;base64,${response.image_encoded}`;
 		}else if (this.generationOptions.max_size >= 40 || (this.generationOptions.max_size <= 16 && realTileSize > 70)) {
 			this.updateStatusText(MODULE.localize('dialog.status.getMap'));
 			const response = await this.getMapFromAPI(this.generationOptions);
+			if (typeof response == 'undefined') return; // Kick out if unable to Get Image from API
 			this.sceneOptions.background.src = `data:image/jpeg;charset=utf-8;base64,${response.image_encoded}`;
 		}
 
@@ -413,11 +414,15 @@ export default class DunGenTesting extends VueApplication {
 				theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'original',
 				green_path: 'fvtt'
 			 }))).walls ?? [];
+
+			// If Wall Data is Empty, Display warning to user
+			if (this.sceneOptions.walls.length == 0) ui.notifications.warn(MODULE.localize('notifications.warning.noWalls'));
 		}
 
 		// Save Image to Server
 		this.updateStatusText(MODULE.localize('dialog.status.savingMap'));
 		const fileDetails = await this.createImage(this.sceneOptions.background.src, this.sceneOptions.flags[MODULE.ID].image_url);
+		if (!fileDetails) return; // Kick out if unable to Create Image on Server
 
 		// Update Background Image Source
 		this.sceneOptions.background.src = fileDetails?.path ?? '';
@@ -454,9 +459,13 @@ export default class DunGenTesting extends VueApplication {
 		const target = await this.createSceneFolder();
 		const file = await fetch(fileURL)
             .then(response => response.arrayBuffer())
-            .then(buffer => new File([buffer], fileName, { type: 'image/jpeg' }));
-
-		return await FilePicker.upload('data', target, file);
+            .then(buffer => new File([buffer], fileName, { type: 'image/jpeg' }))
+			.catch(error => {
+				ui.notifications.error(MODULE.localize('notifications.errors.createImage'));
+				return false;
+			})
+		// If file is false, return false
+		return file ? await FilePicker.upload('data', target, file) : file;
 	}
 
 	activateListeners(html) {

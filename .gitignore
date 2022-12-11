@@ -1,2 +1,3 @@
 .private/
 node_modules/
+scripts/bundle.min.mjs

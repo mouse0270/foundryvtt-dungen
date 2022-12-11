@@ -4,13 +4,13 @@ import MODULE from './module.json' assert { type: 'json' };
 import { terser } from "rollup-terser";
 
 export default {
-	input: `./scripts/init.mjs`,
+	input: `.${MODULE.esmodules[0]}`,
 	output: {
-		file: `.${MODULE.esmodules[0]}`,
+		file: `./scripts/bundle.min.mjs`,
 		format: 'es',
 		compact: true
 	},
 	plugins: [
-        //terser()
+        terser()
     ]
   };
