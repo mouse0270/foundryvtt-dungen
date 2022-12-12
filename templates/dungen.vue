@@ -76,8 +76,8 @@
 	<div class="form-group" v-if="store.genType == 'cave'">
 		<label>{{localize(`${store.moduleId}.dialog.corridor_density.name`)}}</label>
 		<div class="form-fields number-input">
-			<input type="range" :id="`${store.moduleId}-corridor-density-range`" name="corridor_density" v-model="store.inputValues.corridor_density" @change="store.onInputRangeWheel" min="0" max="1" step="0.1" :disabled="store.isDisabled">
-			<input type="number" :id="`${store.moduleId}-corridor-density-number`" name="corridor_density" v-model="store.inputValues.corridor_density" @change="store.setRequiresRegeneration" min="0" max="1" step="0.1" :disabled="store.isDisabled">
+			<input type="range" :id="`${store.moduleId}-corridor-density-range`" name="corridor_density" v-model="store.inputValues.corridor_density" @change="store.onInputRangeWheel" :value="store.inputValues.corridor_density" min="0" max="1" step="0.1" :disabled="store.isDisabled">
+			<input type="number" :id="`${store.moduleId}-corridor-density-number`" name="corridor_density" v-model="store.inputValues.corridor_density" @change="store.setRequiresRegeneration" :value="store.inputValues.corridor_density" min="0" max="1" step="0.1" :disabled="store.isDisabled">
 		</div>
 		<p><small>{{localize(`${store.moduleId}.dialog.corridor_density.hint`)}}</small></p>
 	</div>
@@ -85,8 +85,8 @@
 	<div class="form-group" v-if="store.genType == 'cave'">
 		<label>{{localize(`${store.moduleId}.dialog.egress.name`)}}</label>
 		<div class="form-fields number-input">
-			<input type="range" :id="`${store.moduleId}-egress-range`" name="egress" v-model="store.inputValues.egress" @change="store.onInputRangeWheel" min="0" max="9" step="1" :disabled="store.isDisabled">
-			<input type="number" :id="`${store.moduleId}-egress-number`" name="egress" v-model="store.inputValues.egress" @change="store.setRequiresRegeneration" min="0" max="9" step="1" :disabled="store.isDisabled">
+			<input type="range" :id="`${store.moduleId}-egress-range`" name="egress" v-model="store.inputValues.egress" @change="store.onInputRangeWheel" :value="store.inputValues.egress" min="0" max="9" step="1" :disabled="store.isDisabled">
+			<input type="number" :id="`${store.moduleId}-egress-number`" name="egress" v-model="store.inputValues.egress" @change="store.setRequiresRegeneration" :value="store.inputValues.egress" min="0" max="9" step="1" :disabled="store.isDisabled">
 		</div>
 		<p><small>{{localize(`${store.moduleId}.dialog.egress.hint`)}}</small></p>
 	</div>
@@ -137,7 +137,7 @@
 		<strong>{{localize(`${store.moduleId}.dialog.map_details.pixel_size`)}}:</strong> {{store.mapDetails.pixel_size?.width ?? ''}} x {{store.mapDetails.pixel_size?.height ?? ''}}px<br/>
 	</div>
 
-	<div class="form-group notification warning" v-if="!store.maxTextureSize(store.mapDetails?.pixel_size ?? {}) && store.checkSize((store.mapDetails.pixel_size?.width ?? 0), (store.mapDetails.pixel_size?.height ?? 0))['8k']" style="box-shadow: none; text-shadow: none;">
+	<div class="form-group notification warning" v-if="!store.maxTextureSize(store.mapDetails?.pixel_size ?? {}) && store.checkSize((store.mapDetails.pixel_size?.width ?? 0), (store.mapDetails.pixel_size?.height ?? 0))['8k'] && !store.disable_8k_warning" style="box-shadow: none; text-shadow: none;">
 		{{localize(`${store.moduleId}.notifications.8k_warning`)}}
 		<button :id="`${store.moduleId}-btn-regenerate`" @click="store.regenerateDungeon($el)"><i class="fa-light fa-dungeon"></i> {{localize(`${store.moduleId}.dialog.buttons.generate`)}}</button>
 	</div>

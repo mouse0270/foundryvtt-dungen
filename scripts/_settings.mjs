@@ -18,6 +18,21 @@ Hooks.once('setup', async () => {
 		.then(response => response.json());
 	}
 
+	const updateShowInSidebar = (value) => {
+		const sceneElem = document.querySelector('#sidebar section.tab[data-tab="scenes"]');
+		if (value) {
+			// Handle for DDB Importer adding click event to header-actions instead of header-actions > button
+			Array.from(sceneElem.querySelectorAll('.header-actions')).pop().insertAdjacentHTML('beforeend', `<button class="create-dungen" data-button="dungen">
+				<i class="fa-light fa-dungeon"></i> ${MODULE.TITLE}
+			</button>`);
+			sceneElem.querySelector('.header-actions.action-buttons button[data-button="dungen"]').addEventListener('click', (event) => {
+				new DunGenTesting({ name: '', folder: '' }).render(true)
+			});
+		}else{
+			sceneElem.querySelector('.header-actions.action-buttons button[data-button="dungen"]')?.remove();
+		}
+	}
+
 	MODULE.setting('register', 'scene_storage', {
 		type: String,
 		default: "DunGen Scenes",
@@ -30,20 +45,15 @@ Hooks.once('setup', async () => {
 		default: true,
 		scope: 'world',
 		config: true,
-		onChange: async (value) => {
-			const sceneElem = document.querySelector('#sidebar section.tab[data-tab="scenes"]');
-			if (value) {
-				// Handle for DDB Importer adding click event to header-actions instead of header-actions > button
-				Array.from(sceneElem.querySelectorAll('.header-actions')).pop().insertAdjacentHTML('beforeend', `<button class="create-dungen" data-button="dungen">
-					<i class="fa-light fa-dungeon"></i> ${MODULE.TITLE}
-				</button>`);
-				sceneElem.querySelector('.header-actions.action-buttons button[data-button="dungen"]').addEventListener('click', (event) => {
-					new DunGenTesting({ name: '', folder: '' }).render(true)
-				});
-			}else{
-				sceneElem.querySelector('.header-actions.action-buttons button[data-button="dungen"]')?.remove();
-			}
-		}
+		onChange: updateShowInSidebar
+	});
+
+	MODULE.setting('register', 'disable_8k_warning', {
+		type: Boolean,
+		default: false,
+		scope: 'world',
+		config: true,
+		onChange: (value) => { MODULE.log(value) }
 	});
 
 	MODULE.setting('register', 'patreon_token', {
@@ -94,16 +104,21 @@ Hooks.once('setup', async () => {
 		if (!game.user.isGM) return;
 
 		// Don't do Anything if no values exists
-		if (isEmpty(MODULE.setting('patreon_values'))) return;
+		if (isEmpty(MODULE.setting('patreon_values'))) {
+			elem[0].querySelector(`section[data-tab="${MODULE.ID}"] .form-group:last-of-type`).insertAdjacentHTML('afterend', `<div class="form-group notification" style="box-shadow: none; text-shadow: none;">
+				<div>${MODULE.localize('notifications.patreon_signup')}</div>
+			</div>`);
+			return;
+		}
 
-		// Check out if Pledge is Unknown
-		// Check out if Pledge Features is Unknown
-		// Check out if Pledge Features is Unknown
+		// Check if Pledge is Unknown
+		// Check if Pledge Features is Unknown
+		// Check if Pledge Expiry is Valid
 		if ((!MODULE.setting('patreon_values')?.patreon_pledge ?? false)
 			&&(!MODULE.setting('patreon_values')?.patreon_features ?? false)
 			&& (new Date(MODULE.setting('patreon_values')?.expiry ?? '') == 'Invalid Date')) {
 
-			elem[0].querySelector(`section[data-tab="${MODULE.ID}"] .form-group:last-of-type`).insertAdjacentHTML('afterend', `<div class="form-group notification error">
+			elem[0].querySelector(`section[data-tab="${MODULE.ID}"] .form-group:last-of-type`).insertAdjacentHTML('afterend', `<div class="form-group notification error" style="box-shadow: none; text-shadow: none;">
 				<div><strong>${MODULE.TITLE}</strong> ${MODULE.localize('notifications.invalid_token_data')}</div>
 			</div>`);
 		}else{

@@ -118,6 +118,7 @@ export default class DunGenTesting extends VueApplication {
 			hasWallsPermission: !MODULE.setting('patreon_values')?.token_expired && (MODULE.setting('patreon_values')?.patreon_features ?? []).includes('Automatic Walls'),
 			sceneFolders: game.folders.filter(folder => folder.type === 'Scene').map(folder => { return { id: folder.id, name: folder.name } }),
 			isDisabled: false,
+			disable_8k_warning: MODULE.setting('disable_8k_warning') ?? false,
 			themes: this.getThemes(genType),
 			maxSizes: this.getMapSizes(genType),
 			mapStyles: [ "l_area", "l_rooms", "s_rooms"],
@@ -189,7 +190,7 @@ export default class DunGenTesting extends VueApplication {
 	}
 	
 	_onInputRangeWheel = (event) => {
-		if (event.target.getAttribute('name') == 'corridor-density') {
+		if (event.target.getAttribute('name') == 'corridor_density') {
 			this._vue.store.inputValues.corridor_density = event.target.value;
 		}else if (event.target.getAttribute('name') == 'egress') {
 			this._vue.store.inputValues.egress = event.target.value;
@@ -471,10 +472,14 @@ export default class DunGenTesting extends VueApplication {
 	activateListeners(html) {
 		// Watch for changes in Patreon Values Settings
 		this._hookIds.push(['updateSetting', Hooks.on('updateSetting', async (setting, value, options, user) => {
-			if (setting.key != `${MODULE.ID}.patreon_values`) return;
+			if (![`${MODULE.ID}.patreon_values`, `${MODULE.ID}.disable_8k_warning`].includes(setting.key)) return;
 
-			this._vue.store.tileSizes = this.getTileSizes(this._vue.store.genType);
-			this._vue.store.hasWallsPermission = !MODULE.setting('patreon_values')?.token_expired && (MODULE.setting('patreon_values')?.patreon_features ?? []).includes('Automatic Walls')
+			if (setting.key === `${MODULE.ID}.patreon_values`) {
+				this._vue.store.tileSizes = this.getTileSizes(this._vue.store.genType);
+				this._vue.store.hasWallsPermission = !MODULE.setting('patreon_values')?.token_expired && (MODULE.setting('patreon_values')?.patreon_features ?? []).includes('Automatic Walls');
+			}else if (setting.key === `${MODULE.ID}.disable_8k_warning`) {
+				this._vue.store.disable_8k_warning = value.value === 'true';
+			}
 		})]);
 
 		// Watch For New Scene Folders
