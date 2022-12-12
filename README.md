@@ -4,8 +4,6 @@
 [![Forge][forge-installs]][forge-url]
 [![Downloads][latest-download]][latest-download-url]
 [![GithubStars][github-starts]][github-url]
-[![Patreon][patreon]][patreon-url]
-[![Kofi][ko-fi]][ko-fi-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -63,9 +61,3 @@ Distributed under the MIT License. See [LICENSE](https://github.com/mouse0270/fo
 
 [github-starts]: https://img.shields.io/github/stars/mouse0270/foundryvtt-dungen?logo=AddThis&logoColor=white&style=for-the-badge
 [github-url]: https://github.com/mouse0270/foundryvtt-dungen
-
-[patreon]: https://img.shields.io/badge/-Patreon-FF424D?style=for-the-badge&logo=Patreon&logoColor=white
-[patreon-url]: https://www.patreon.com/mouse0270
-
-[ko-fi]: https://img.shields.io/badge/-ko%20fi-FF5E5B?style=for-the-badge&logo=Ko-fi&logoColor=white
-[ko-fi-url]: https://ko-fi.com/mouse0270
