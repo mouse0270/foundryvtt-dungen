@@ -11,10 +11,10 @@ import { libWrapper } from './libraries/lib-wrapper.shim.js';
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
 // socketlib HOOKS -> socketlib.ready
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
-Hooks.once('socketlib.ready', () => {
+/*Hooks.once('socketlib.ready', () => {
 	MODULE.debug('SOCKETLIB Ready - SOCKET'); // WONT REGISTER CAUSE CALL HAPPENS WAY TO EARLY
 	CORE.registerSocketLib();
-});
+});*/
 
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
 // 🧙 DEVELOPER MODE HOOKS -> devModeReady
