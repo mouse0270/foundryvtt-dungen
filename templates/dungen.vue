@@ -64,7 +64,7 @@
 	</div>
 
 	<div class="form-group floating-labels">
-		<select :id="`${store.moduleId}-tile-size`" name="tile_size" @change="store.setRequiresRegeneration" :disabled="store.isDisabled">
+		<select :id="`${store.moduleId}-tile-size`" name="tile_size" :disabled="store.isDisabled">
 			<optgroup v-for="(tileSizeGroups, index) in store.tileSizes" :label="tileSizeGroups.title" :disabled="tileSizeGroups.isPatreonLocked && !store.isPatreon">
 				<option v-for="(tileSize, index) in tileSizeGroups.options" :value="tileSize" :selected="tileSize === '70'">{{localize(`${store.moduleId}.dialog.tile_size.choices.${tileSize}`)}}</option>
 			</optgroup>
@@ -139,17 +139,17 @@
 
 	<div class="form-group notification warning" v-if="!store.maxTextureSize(store.mapDetails?.pixel_size ?? {}) && store.checkSize((store.mapDetails.pixel_size?.width ?? 0), (store.mapDetails.pixel_size?.height ?? 0))['8k'] && !store.disable_8k_warning" style="box-shadow: none; text-shadow: none;">
 		{{localize(`${store.moduleId}.notifications.8k_warning`)}}
-		<button :id="`${store.moduleId}-btn-regenerate`" @click="store.regenerateDungeon($el)"><i class="fa-light fa-dungeon"></i> {{localize(`${store.moduleId}.dialog.buttons.generate`)}}</button>
+		<button :id="`${store.moduleId}-btn-regenerate`" @click="store.regenerateDungeon($el)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i> {{localize(`${store.moduleId}.dialog.buttons.decrease_tile_size`)}}</button>
 	</div>
 
 	<div class="form-group notification error" v-if="!store.maxTextureSize(store.mapDetails?.pixel_size ?? {}) && store.checkSize((store.mapDetails.pixel_size?.width ?? 0), (store.mapDetails.pixel_size?.height ?? 0))['16k']" style="box-shadow: none; text-shadow: none;">
 		{{localize(`${store.moduleId}.notifications.16k_warning`)}}
-		<button :id="`${store.moduleId}-btn-regenerate`" @click="store.regenerateDungeon($el)"><i class="fa-light fa-dungeon"></i> {{localize(`${store.moduleId}.dialog.buttons.generate`)}}</button>
+		<button :id="`${store.moduleId}-btn-regenerate`" @click="store.regenerateDungeon($el)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i> {{localize(`${store.moduleId}.dialog.buttons.decrease_tile_size`)}}</button>
 	</div>
 
 	<div class="form-group notification error" v-if="store.maxTextureSize(store.mapDetails?.pixel_size ?? {})" style="box-shadow: none; text-shadow: none;">
 		{{localize(`${store.moduleId}.notifications.max_texture_size_error`)}}
-		<button :id="`${store.moduleId}-btn-regenerate`" @click="store.regenerateDungeon($el)"><i class="fa-light fa-dungeon"></i> {{localize(`${store.moduleId}.dialog.buttons.generate`)}}</button>
+		<button :id="`${store.moduleId}-btn-regenerate`" @click="store.regenerateDungeon($el)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i> {{localize(`${store.moduleId}.dialog.buttons.decrease_tile_size`)}}</button>
 	</div>
 
 	<div class="button-group">

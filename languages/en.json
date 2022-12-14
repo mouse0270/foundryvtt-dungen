@@ -81,7 +81,7 @@
 			},
 			"tile_size": {
 				"name": "Tile Size",
-				"hint": "Tile Size - Higher Resolution (140px) Available to Patreon's",
+				"hint": "Tile Size - Higher Resolution (140px) Available to Patreons",
 				"choices": {
 					"50": "Fantasy Grounds: 50px",
 					"70": "Standard: 70px",
@@ -120,6 +120,7 @@
 			},
 			"buttons": {
 				"generate": "Generate",
+				"decrease_tile_size": "Decrease Tile Size",
 				"building": "Building Map",
 				"create": "Create Scene"
 			},

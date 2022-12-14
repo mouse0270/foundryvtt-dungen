@@ -172,9 +172,13 @@ export default class DunGenTesting extends VueApplication {
 		if (this.sceneOptions == null) return;
 		const elem = event.target.closest(`#${MODULE.ID}-dialog`);
 		const seed = elem.querySelector('aside input[type="text"][name="seed"]').value?.length > 0 ? elem.querySelector('aside input[type="text"][name="seed"]').value : this.sceneOptions.flags[MODULE.ID].seed_string;
-		const checkGenerationData = this.getGenerationProps(elem, seed)
+		const checkGenerationData = this.getGenerationProps(elem, seed);
+		const validGenerationOptions = this.generationOptions;
 
-		this._vue.store.requiresRegeneration = !(JSON.stringify(this.generationOptions) == JSON.stringify(checkGenerationData));
+		//delete checkGenerationData.tile_size;
+		//delete validGenerationOptions.tile_size;
+
+		this._vue.store.requiresRegeneration = !(JSON.stringify(validGenerationOptions) == JSON.stringify(checkGenerationData));
 
 		// Handle Generation Button State
 		const generateBtn = elem.querySelector(`aside .button-group button[id="${MODULE.ID}-btn-generate"]`);
