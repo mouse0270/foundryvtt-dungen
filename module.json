@@ -69,6 +69,7 @@
 	"bugs": "This is auto replaced",
 	"flags": {
 		"allowBugReporter": true, 
-		"attributions": "This is auto replaced"
+		"attributions": "This is auto replaced",
+		"API": "https://ttrpg.ink/api"
 	}
 }

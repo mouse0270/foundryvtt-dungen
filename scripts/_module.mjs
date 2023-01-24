@@ -1,5 +1,6 @@
 export class MODULE {
 	static ID = 'foundryvtt-dungen';
+	static API = 'https://ttrpg.ink/api';
 
 	static OPTIONS = {
 		background: '#7030A0',
@@ -18,9 +19,9 @@ export class MODULE {
 		return this.localize('title');
 	}
 
-	static get API() {
+	/*static get API() {
 		return 'https://ttrpg.ink/api'
-	}
+	}*/
 
 	static localize(stringId, data = {}) {
 		return foundry.utils.isEmpty(data.hash ?? {}) ? game.i18n.localize(`${this.ID}.${stringId}`) : game.i18n.format(`${this.ID}.${stringId}`, data);

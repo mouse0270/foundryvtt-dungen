@@ -32,7 +32,13 @@ export default class DunGenTesting extends VueApplication {
 
 	static installAPI = () => { }
 
-	static init = () => { this.installAPI(); }
+	static init = () => { 
+		// Set API URL
+		MODULE.API = game.modules.get(MODULE.ID).flags.API;
+
+		// Register API
+		this.installAPI();
+	 }
 
 	static get defaultOptions() {
       	return mergeObject(

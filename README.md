@@ -39,6 +39,8 @@ Here are some previews of Dungeons and Caves generated using DunGen:
 ## License
 Distributed under the MIT License. See [LICENSE](https://github.com/mouse0270/foundryvtt-dungen/blob/master/LICENSE) for more information.
 
+The API used to generate the Maps is licensed under the following [LICENSE](https://github.com/mouse0270/foundryvtt-dungen/blob/master/Api_License_Agreement.pdf), please refer to this license when attempting to use the Dungen API.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->

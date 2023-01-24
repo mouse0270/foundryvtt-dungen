@@ -103,6 +103,22 @@ Hooks.once('setup', async () => {
 		// User is not a Game Master and can not create Scenes
 		if (!game.user.isGM) return;
 
+		// Update Patreon_Token Field
+		let input = elem[0].querySelector(`section[data-tab="${MODULE.ID}"] .form-fields input[name="${MODULE.ID}.patreon_token"]`);
+		input.setAttribute('type', 'password');
+		// Add Toggle Button
+		input.insertAdjacentHTML('afterend', '<button><i class="fa-solid fa-eye"></i></button>');
+		input.nextElementSibling.addEventListener('click', (event) => {
+			event.preventDefault();
+
+			// Toggle Input Type
+			input.setAttribute('type', input.getAttribute('type') == 'password' ? 'text' : 'password');
+			
+			// Toggle Icion
+			input.nextElementSibling.querySelector('i').classList.toggle('fa-eye', input.getAttribute('type') == 'password');
+			input.nextElementSibling.querySelector('i').classList.toggle('fa-eye-slash', input.getAttribute('type') != 'password');
+		});
+
 		// Don't do Anything if no values exists
 		if (isEmpty(MODULE.setting('patreon_values'))) {
 			elem[0].querySelector(`section[data-tab="${MODULE.ID}"] .form-group:last-of-type`).insertAdjacentHTML('afterend', `<div class="form-group notification" style="box-shadow: none; text-shadow: none;">
@@ -123,7 +139,7 @@ Hooks.once('setup', async () => {
 			</div>`);
 		}else{
 			elem[0].querySelector(`section[data-tab="${MODULE.ID}"] .form-group:last-of-type`).insertAdjacentHTML('afterend', `<div class="form-group patreon-status">
-				${new Date(MODULE.setting('patreon_values').expiry) < (new Date()).setHours(0, 0, 0, 0) ? `<div class="form-group notification warning"><div>${MODULE.localize('notifications.expired_token_data')}</div></div>`: ''}
+				${new Date(MODULE.setting('patreon_values').expiry) < (new Date()).setHours(0, 0, 0, 0) ? `<div class="form-group notification warning"><div>${MODULE.localize('notifications.invalid_token_data')}</div></div>`: ''}
 				<div><strong>${MODULE.localize('settings.patreon.tier')}:</strong> ${MODULE.setting('patreon_values')?.patreon_pledge ?? ''}</div>
 				<div><strong>${MODULE.localize('settings.patreon.features')}:</strong> ${(MODULE.setting('patreon_values')?.patreon_features ?? []).join(', ')}</div>
 				<div><strong>${MODULE.localize('settings.patreon.expires')}:</strong> ${(new Date(MODULE.setting('patreon_values')?.expiry ?? '')).toLocaleDateString()}</div>
