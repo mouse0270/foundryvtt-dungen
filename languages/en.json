@@ -134,9 +134,9 @@
 			}
 		},
 		"notifications": {
-			"patreon_signup": "It looks like you are you are not using our Patreon Features. Sign up to our <a href='https://www.patreon.com/DungeonChannel'>Patreon</a> for additional features like 140px Tile Size and Generating Walls for your maps. If you're already signed up, visit <a href='https://ttrpg.ink/fvtt/'>https://ttrpg.ink/fvtt/</a> to get a your token.",
+			"patreon_signup": "It looks like you are you are not using our Patreon Features. Sign up to our <a href='https://www.patreon.com/DungeonChannel'>Patreon</a> for additional features like 140px Tile Size and Generating Walls for your maps. If you're already signed up, visit <a href='https://dungen.app/fvtt/'>https://dungen.app/fvtt/</a> to get a your token.",
 			"requiresRegeneration": "You have made a change that would require you to regerate your dungeon/cave before you are able to create this scene. Undoing that change will re-enable the create scene button.",
-			"invalid_token_data": "There was an error processing your Patreon Token, please go to <a href='https://ttrpg.ink/fvtt/'>https://ttrpg.ink/fvtt/</a> to get a new token.",
+			"invalid_token_data": "There was an error processing your Patreon Token, please go to <a href='https://dungen.app/fvtt/'>https://dungen.app/fvtt/</a> to get a new token.",
 			"8k_warning": "Maps above 8k resolution may cause issues for users with low-end hardware.",
 			"16k_warning": "Maps above 16k resolution may cause the scene image to be rendered as a black square. Its recommended to generate this map with a Tile Size of 70px for best results. Copy the seed string above and use as the seed when generating a new map to keep this same map at a smaller Tile Size.",
 			"max_texture_size_error": "This map is greater than your Max Texture Size and will not be able to be rendered into a scene. Please regenerate this map at a smaller Tile Size."

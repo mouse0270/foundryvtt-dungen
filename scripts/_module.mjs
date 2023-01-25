@@ -19,10 +19,6 @@ export class MODULE {
 		return this.localize('title');
 	}
 
-	/*static get API() {
-		return 'https://ttrpg.ink/api'
-	}*/
-
 	static localize(stringId, data = {}) {
 		return foundry.utils.isEmpty(data.hash ?? {}) ? game.i18n.localize(`${this.ID}.${stringId}`) : game.i18n.format(`${this.ID}.${stringId}`, data);
 	}
