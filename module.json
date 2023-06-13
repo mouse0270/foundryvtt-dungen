@@ -4,9 +4,8 @@
 	"description": "DunGen will generate high resolution dungeons ready to use in Foundry VTT.",
 	"version": "1.0.0",
 	"compatibility": {
-		"minimum": 10,
-		"verified": 10,
-		"maximum": 10
+		"minimum": 9,
+		"verified": 10
 	},
 	"authors": [
 		{
