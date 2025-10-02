@@ -163,7 +163,7 @@
 		{{localize(`${store.moduleId}.notifications.requiresRegeneration`)}}
 	</div>
 
-<div class="form-group notification" v-model="store.mapDetails" v-if="store.mapDetails != false" style="box-shadow: none; text-shadow: none; display: flex; flex-direction: column;">
+<div class="form-group notification" v-model="store.mapDetails" v-if="store.mapDetails != false" style="box-shadow: none; text-shadow: none; display: flex; flex-direction: column; cursor: pointer;" @click="navigator.clipboard.writeText(store.mapDetails.seed_string)">
   <div style="width: 100%; margin-bottom: 0.25rem;">
     <strong>{{localize(`${store.moduleId}.dialog.map_details.seed_string`)}}:</strong>
     <span style="user-select: all;">{{store.mapDetails.seed_string}}</span>
