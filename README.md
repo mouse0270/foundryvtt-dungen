@@ -27,11 +27,13 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Module
-DunGen is a module that allows you to generate procedural created dungeons and caves right inside of foundry. You can customize these generations with many options such as Themes, Map Size, Tile Size, Room Type, Multiple Levels, Corridor Density and Egress. The UI will show you a preview of your new Dungeon or Cave and if you like it, all you have to do is hit Create Scene and DunGen will create the image and setup the default options for your scene for you!
+DunGen is a module based on [DunGen.app](https://dungen.app/dungen) that allows you to generate procedural dungeons and caves right inside of Foundry. You can customize these generations with many options such as Themes, Map & Tile Size, Room Types, Multiple Levels, Furnishing, and more. The UI will show you a preview of your new Dungeon or Cave and if you like it, all you have to do is hit Create Scene and DunGen will create the image and setup the default options for your scene for you!
+
+Most features, including the newly added furnishing, are completely free to use. [Patreon](https://www.patreon.com/c/DungeonChannel) subscribers also have access to automatically generated walls data, so you can have your dungeon ready to play in seconds.
 
 Here are some previews of Dungeons and Caves generated using DunGen:
-![previews](https://user-images.githubusercontent.com/564874/207091606-fd62a301-d56c-46ef-8181-06cfd4726ad8.jpg)
 
+![preview.jpg](images/preview.jpg)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

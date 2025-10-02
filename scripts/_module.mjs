@@ -1,6 +1,6 @@
 export class MODULE {
 	static ID = 'foundryvtt-dungen';
-	static API = 'https://ttrpg.ink/api';
+	static API = 'https://dungen.app/api';
 
 	static OPTIONS = {
 		background: '#7030A0',

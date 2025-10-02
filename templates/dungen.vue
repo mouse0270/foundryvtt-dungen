@@ -49,7 +49,7 @@
 
 	<div class="form-group floating-labels">
 		<select :id="`${store.moduleId}-max-size`" name="max_size" @change="store.setRequiresRegeneration" :disabled="store.isDisabled">
-			<option v-for="(maxSize, index) in store.maxSizes" :value="maxSize" :selected="maxSize === '40'">{{localize(`${store.moduleId}.dialog.max_size.choices.${maxSize}`)}}</option>
+			<option v-for="(maxSize, index) in store.maxSizes" :value="maxSize" :selected="maxSize === '16'">{{localize(`${store.moduleId}.dialog.max_size.choices.${maxSize}`)}}</option>
 		</select>
 		<label>{{localize(`${store.moduleId}.dialog.max_size.name`)}}</label>
 		<p><small>{{localize(`${store.moduleId}.dialog.max_size.hint`)}}</small></p>
@@ -118,6 +118,38 @@
 		<p><small>{{localize(`${store.moduleId}.dialog.trap.hint`)}}</small></p>
 	</div>
 
+	<div class="form-group" v-if="store.genType == 'dungeon'">
+		<label>{{localize(`${store.moduleId}.dialog.furnishing.name`)}}
+			<div class="form-fields">
+				<input type="checkbox" name="enable_furnishing" @change="store.onchangeFurnishing" :checked="store.enableFurnishing" :disabled="store.isDisabled">
+			</div>
+		</label>
+		<p><small>{{localize(`${store.moduleId}.dialog.furnishing.hint`)}}</small></p>
+	</div>
+
+	<div class="form-group" v-if="store.genType == 'dungeon' && store.enableFurnishing">
+		<label>{{localize(`${store.moduleId}.dialog.theme_selection.name`)}}</label>
+		<p><small>{{localize(`${store.moduleId}.dialog.theme_selection.hint`)}}</small></p>
+		<div class="input-group">
+			<input type="radio" :id="`${store.moduleId}-theme-selection-random`" name="theme_selection_mode" value="random" @change="store.onchangeThemeSelection" :checked="!store.customThemeSelection" :disabled="store.isDisabled">
+			<label :for="`${store.moduleId}-theme-selection-random`">{{localize(`${store.moduleId}.dialog.theme_selection.random`)}}</label>
+
+			<input type="radio" :id="`${store.moduleId}-theme-selection-custom`" name="theme_selection_mode" value="custom" @change="store.onchangeThemeSelection" :checked="store.customThemeSelection" :disabled="store.isDisabled">
+			<label :for="`${store.moduleId}-theme-selection-custom`">{{localize(`${store.moduleId}.dialog.theme_selection.custom`)}}</label>
+		</div>
+	</div>
+
+	<div class="form-group" v-if="store.genType == 'dungeon' && store.enableFurnishing && store.customThemeSelection">
+		<label>{{localize(`${store.moduleId}.dialog.setting_themes.name`)}}</label>
+		<p><small>{{localize(`${store.moduleId}.dialog.setting_themes.hint`)}}</small></p>
+		<div class="checkbox-group" style="max-height: 150px; overflow-y: auto; border: 1px solid var(--color-border-light); padding: 0.5rem; border-radius: 4px;">
+			<div v-for="theme in store.settingThemes" class="checkbox-item" style="display: flex; align-items: center; margin-bottom: 0.25rem;">
+				<input type="checkbox" :id="`${store.moduleId}-setting-theme-${theme.id}`" :name="`setting_theme_${theme.id}`" :value="theme.id" @change="store.setRequiresRegeneration" :disabled="store.isDisabled" style="margin-right: 0.5rem;">
+				<label :for="`${store.moduleId}-setting-theme-${theme.id}`" style="margin: 0; cursor: pointer;">{{theme.name}}</label>
+			</div>
+		</div>
+	</div>
+
 	<div :class="{'form-group': true, 'disabled': !store.hasWallsPermission}">
 		<label><i class="fa-brands fa-patreon"></i> {{localize(`${store.moduleId}.dialog.green_path.name`)}}
 			<div class="form-fields">
@@ -131,11 +163,20 @@
 		{{localize(`${store.moduleId}.notifications.requiresRegeneration`)}}
 	</div>
 
-	<div class="form-group notification" v-model="store.mapDetails" v-if="store.mapDetails != false" style="box-shadow: none; text-shadow: none;">
-		<strong>{{localize(`${store.moduleId}.dialog.map_details.seed_string`)}}:</strong> <span style="user-select: all;">{{store.mapDetails.seed_string}}</span><br/>
-		<strong>{{localize(`${store.moduleId}.dialog.map_details.max_tile_size`)}}:</strong> {{store.mapDetails.max_tile_size?.[0] ?? ''}} x {{store.mapDetails.max_tile_size?.[1] ?? ''}}<br/>
-		<strong>{{localize(`${store.moduleId}.dialog.map_details.pixel_size`)}}:</strong> {{store.mapDetails.pixel_size?.width ?? ''}} x {{store.mapDetails.pixel_size?.height ?? ''}}px<br/>
-	</div>
+<div class="form-group notification" v-model="store.mapDetails" v-if="store.mapDetails != false" style="box-shadow: none; text-shadow: none; display: flex; flex-direction: column; cursor: pointer;" @click="navigator.clipboard.writeText(store.mapDetails.seed_string)">
+  <div style="width: 100%; margin-bottom: 0.25rem;">
+    <strong>{{localize(`${store.moduleId}.dialog.map_details.seed_string`)}}:</strong>
+    <span style="user-select: all;">{{store.mapDetails.seed_string}}</span>
+  </div>
+  <div style="width: 100%; margin-bottom: 0.25rem;">
+    <strong>{{localize(`${store.moduleId}.dialog.map_details.max_tile_size`)}}:</strong>
+    {{store.mapDetails.max_tile_size?.[0] ?? ''}} x {{store.mapDetails.max_tile_size?.[1] ?? ''}}
+  </div>
+  <div style="width: 100%;">
+    <strong>{{localize(`${store.moduleId}.dialog.map_details.pixel_size`)}}:</strong>
+    {{store.mapDetails.pixel_size?.width ?? ''}} x {{store.mapDetails.pixel_size?.height ?? ''}}px
+  </div>
+</div>
 
 	<div class="form-group notification warning" v-if="!store.maxTextureSize(store.mapDetails?.pixel_size ?? {}) && store.checkSize((store.mapDetails.pixel_size?.width ?? 0), (store.mapDetails.pixel_size?.height ?? 0))['8k'] && !store.disable_8k_warning" style="box-shadow: none; text-shadow: none;">
 		{{localize(`${store.moduleId}.notifications.8k_warning`)}}
