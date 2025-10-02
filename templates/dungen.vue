@@ -163,11 +163,20 @@
 		{{localize(`${store.moduleId}.notifications.requiresRegeneration`)}}
 	</div>
 
-	<div class="form-group notification" v-model="store.mapDetails" v-if="store.mapDetails != false" style="box-shadow: none; text-shadow: none;">
-		<strong>{{localize(`${store.moduleId}.dialog.map_details.seed_string`)}}:</strong> <span style="user-select: all;">{{store.mapDetails.seed_string}}</span><br/>
-		<strong>{{localize(`${store.moduleId}.dialog.map_details.max_tile_size`)}}:</strong> {{store.mapDetails.max_tile_size?.[0] ?? ''}} x {{store.mapDetails.max_tile_size?.[1] ?? ''}}<br/>
-		<strong>{{localize(`${store.moduleId}.dialog.map_details.pixel_size`)}}:</strong> {{store.mapDetails.pixel_size?.width ?? ''}} x {{store.mapDetails.pixel_size?.height ?? ''}}px<br/>
-	</div>
+<div class="form-group notification" v-model="store.mapDetails" v-if="store.mapDetails != false" style="box-shadow: none; text-shadow: none; display: flex; flex-direction: column;">
+  <div style="width: 100%; margin-bottom: 0.25rem;">
+    <strong>{{localize(`${store.moduleId}.dialog.map_details.seed_string`)}}:</strong>
+    <span style="user-select: all;">{{store.mapDetails.seed_string}}</span>
+  </div>
+  <div style="width: 100%; margin-bottom: 0.25rem;">
+    <strong>{{localize(`${store.moduleId}.dialog.map_details.max_tile_size`)}}:</strong>
+    {{store.mapDetails.max_tile_size?.[0] ?? ''}} x {{store.mapDetails.max_tile_size?.[1] ?? ''}}
+  </div>
+  <div style="width: 100%;">
+    <strong>{{localize(`${store.moduleId}.dialog.map_details.pixel_size`)}}:</strong>
+    {{store.mapDetails.pixel_size?.width ?? ''}} x {{store.mapDetails.pixel_size?.height ?? ''}}px
+  </div>
+</div>
 
 	<div class="form-group notification warning" v-if="!store.maxTextureSize(store.mapDetails?.pixel_size ?? {}) && store.checkSize((store.mapDetails.pixel_size?.width ?? 0), (store.mapDetails.pixel_size?.height ?? 0))['8k'] && !store.disable_8k_warning" style="box-shadow: none; text-shadow: none;">
 		{{localize(`${store.moduleId}.notifications.8k_warning`)}}
