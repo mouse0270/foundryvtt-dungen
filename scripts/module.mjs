@@ -78,14 +78,31 @@ export default class DunGenTesting extends VueApplication {
 		const tileSizes = [{
 			"title": "Default Options",
 			"isPatreonLocked": false,
-			"options": [ "50", "70" ] 
+			"options": [ "50", "70" ]
 		},{
 			"title": "Patreon Exclusive",
 			"isPatreonLocked": (MODULE.setting('patreon_values')?.token_expired || !(MODULE.setting('patreon_values')?.patreon_features ?? []).includes('Double Resolution (140px grid)')),
-			"options": [ "140" ] 
+			"options": [ "140" ]
 		}];
 
 		return tileSizes
+	}
+
+	getSettingThemes() {
+		// Hardcoded for now, intending to update via API later
+		return [
+			{ id: 1, name: "Generic", is_active: true },
+			{ id: 2, name: "Bandit Hideout", is_active: true },
+			{ id: 3, name: "Monster Infested", is_active: true },
+            { id: 4, name: "Goblinoid Den", is_active: true }
+		];
+	}
+
+	getFurnishingModes() {
+		return [
+			{ value: "random", label: "Random" },
+			{ value: "custom", label: "Custom" }
+		];
 	}
 
 	getGenerationProps(elem, seed=randomID(12)) {
@@ -100,17 +117,35 @@ export default class DunGenTesting extends VueApplication {
 			image_encoded: true
 		}
 
-		if (genType == 'dungeon') mergeObject(data, {
+		if (genType == 'dungeon') {
+			// Get furnishing settings
+			const enableFurnishing = elem.querySelector('aside input[type="checkbox"][name="enable_furnishing"]')?.checked ?? true;
+			const themeSelectionMode = elem.querySelector('aside input[type="radio"][name="theme_selection_mode"]:checked')?.value ?? 'random';
+
+			// Get selected custom themes if in custom mode
+			let selectedThemes = [];
+			if (themeSelectionMode === 'custom') {
+				const themeCheckboxes = elem.querySelectorAll('aside input[type="checkbox"][name^="setting_theme_"]:checked');
+				selectedThemes = Array.from(themeCheckboxes).map(cb => parseInt(cb.value));
+			}
+
+			mergeObject(data, {
 				multi_level: elem.querySelector('aside input[type="checkbox"][name="multi_level"]')?.checked ?? false,
-				trap: elem.querySelector('aside input[type="checkbox"][name="trap"]')?.checked ?? false
+				trap: elem.querySelector('aside input[type="checkbox"][name="trap"]')?.checked ?? false,
+				enable_furnishing: enableFurnishing,
+				theme_selection_mode: enableFurnishing ? themeSelectionMode : null,
+//				setting_themes: JSON.stringify(selectedThemes)
+                setting_themes: selectedThemes  // Remove JSON.stringify()
+
 			});
+		}
 		else if (genType == 'cave') mergeObject(data, {
 				map_style: elem.querySelector('aside select[name="map_style"]').value ?? 'l_rooms',
 				corridor_density: elem.querySelector('aside input[type="range"][name="corridor_density"]').value ?? 0,
 				egress: elem.querySelector('aside input[type="range"][name="egress"]').value ?? 1,
 				secret_rooms: elem.querySelector('aside input[type="checkbox"][name="secret_rooms"]')?.checked ?? false
 			});
-		
+
 		return data;
 	}
 
@@ -129,6 +164,11 @@ export default class DunGenTesting extends VueApplication {
 			maxSizes: this.getMapSizes(genType),
 			mapStyles: [ "l_area", "l_rooms", "s_rooms"],
 			tileSizes: this.getTileSizes(genType),
+			// Furnishing data
+			settingThemes: this.getSettingThemes(),
+			furnishingModes: this.getFurnishingModes(),
+			enableFurnishing: true,
+			customThemeSelection: false,
 			inputValues: {
 				name: options.name,
 				folder: options.folder,
@@ -140,16 +180,18 @@ export default class DunGenTesting extends VueApplication {
 			onInputRangeWheel: this._onInputRangeWheel,
 			onchangeGenType: this._onchangeGenType,
 			onMountImage: this._onMountImage,
+			onchangeFurnishing: this._onchangeFurnishing,
+			onchangeThemeSelection: this._onchangeThemeSelection,
 			generateDungeon: this._generateDungeon,
 			regenerateDungeon: (elem) => {
 				const dialog = elem.closest(`#${MODULE.ID}-dialog`);
 				let tileSize = dialog.querySelector('aside select[name="tile_size"]').value;
-				
+
 				if (tileSize == 140) tileSize = 70
 				else if (tileSize == 70) tileSize = 50;
 
 				dialog.querySelector('aside select[name="tile_size"]').value = tileSize;
-				this.generationOptions.tile_size = tileSize;				
+				this.generationOptions.tile_size = tileSize;
 
 				this._generateDungeon({
 					target: elem
@@ -224,6 +266,27 @@ export default class DunGenTesting extends VueApplication {
 		if (this.sceneOptions == null) return;
 		this._vue.store.requiresRegeneration = true;
 		setTimeout(() => this._setRequiresRegeneration(event), 100);
+	}
+
+	_onchangeFurnishing = (event) => {
+		const isEnabled = event.target.checked;
+		this._vue.store.enableFurnishing = isEnabled;
+
+		// If furnishing is disabled, also disable custom theme selection
+		if (!isEnabled) {
+			this._vue.store.customThemeSelection = false;
+		}
+
+		// Check if Scene Needs to be Regenerated
+		this._setRequiresRegeneration(event);
+	}
+
+	_onchangeThemeSelection = (event) => {
+		const isCustom = event.target.value === 'custom';
+		this._vue.store.customThemeSelection = isCustom;
+
+		// Check if Scene Needs to be Regenerated
+		this._setRequiresRegeneration(event);
 	}
 
 	_onMountImage = (elem) => {
@@ -418,13 +481,15 @@ export default class DunGenTesting extends VueApplication {
 			this.sceneOptions.background.src = `data:image/jpeg;charset=utf-8;base64,${response.image_encoded}`;
 		}
 
-		// Get Map Walls
-		if (elem.querySelector('input[type="checkbox"][name="green_path"').checked) {
-			this.updateStatusText(MODULE.localize('dialog.status.getWalls'));
-			this.sceneOptions.walls = (await this.getMapFromAPI(mergeObject(this.generationOptions, { 
-				theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'original',
-				green_path: 'fvtt'
-			 }))).walls ?? [];
+        // Get Map Walls
+        if (elem.querySelector('input[type="checkbox"][name="green_path"').checked) {
+            this.updateStatusText(MODULE.localize('dialog.status.getWalls'));
+            this.sceneOptions.walls = (await this.getMapFromAPI(mergeObject(this.generationOptions, {
+                theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'original',
+                green_path: 'fvtt',
+                enable_furnishing: false,
+                setting_themes: []
+             }))).walls ?? [];
 
 			// If Wall Data is Empty, Display warning to user
 			if (this.sceneOptions.walls.length == 0) ui.notifications.warn(MODULE.localize('notifications.warning.noWalls'));

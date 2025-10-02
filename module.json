@@ -2,10 +2,10 @@
 	"id": "foundryvtt-dungen",
 	"title": "DunGen",
 	"description": "DunGen will generate high resolution dungeons ready to use in Foundry VTT.",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"compatibility": {
 		"minimum": 10,
-		"verified": 11
+		"verified": 13
 	},
 	"authors": [
 		{
@@ -69,6 +69,6 @@
 	"flags": {
 		"allowBugReporter": true, 
 		"attributions": "This is auto replaced",
-		"API": "https://ttrpg.ink/api"
+		"API": "https://dungen.app/api"
 	}
 }

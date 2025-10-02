@@ -1,3 +1,7 @@
+# Version 1.1.0 - Furnishing
+- Added a Furnishing option to the Dungeon Generator
+- Updated Verified for v13
+
 # Version 1.0.1 - Foundry v11 Compatibility
 - Removed Max Version from package manifest
 - Updated Verified for v11
