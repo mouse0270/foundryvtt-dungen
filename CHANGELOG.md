@@ -1,3 +1,7 @@
+# Version 1.1.1 - Foundry v14 Compatibility
+- Added Foundry v14 Support
+- Updated Verified for v14
+
 # Version 1.1.0 - Furnishing
 - Added a Furnishing option to the Dungeon Generator
 - Updated Verified for v13

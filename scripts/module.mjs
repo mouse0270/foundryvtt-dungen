@@ -41,7 +41,7 @@ export default class DunGenTesting extends VueApplication {
 	 }
 
 	static get defaultOptions() {
-      	return mergeObject(
+      	return foundry.utils.mergeObject(
 			super.defaultOptions, {
 			title: MODULE.TITLE,
 			id: `${MODULE.ID}-dialog`,
@@ -105,7 +105,7 @@ export default class DunGenTesting extends VueApplication {
 		];
 	}
 
-	getGenerationProps(elem, seed=randomID(12)) {
+	getGenerationProps(elem, seed=foundry.utils.randomID(12)) {
 		const genType = elem.querySelector('aside input[type="radio"][name="gen_type"]:checked').value;
 
 		let data = {
@@ -129,7 +129,7 @@ export default class DunGenTesting extends VueApplication {
 				selectedThemes = Array.from(themeCheckboxes).map(cb => parseInt(cb.value));
 			}
 
-			mergeObject(data, {
+			foundry.utils.mergeObject(data, {
 				multi_level: elem.querySelector('aside input[type="checkbox"][name="multi_level"]')?.checked ?? false,
 				trap: elem.querySelector('aside input[type="checkbox"][name="trap"]')?.checked ?? false,
 				enable_furnishing: enableFurnishing,
@@ -139,7 +139,7 @@ export default class DunGenTesting extends VueApplication {
 
 			});
 		}
-		else if (genType == 'cave') mergeObject(data, {
+		else if (genType == 'cave') foundry.utils.mergeObject(data, {
 				map_style: elem.querySelector('aside select[name="map_style"]').value ?? 'l_rooms',
 				corridor_density: elem.querySelector('aside input[type="range"][name="corridor_density"]').value ?? 0,
 				egress: elem.querySelector('aside input[type="range"][name="egress"]').value ?? 1,
@@ -335,7 +335,7 @@ export default class DunGenTesting extends VueApplication {
 		})
 	} 
 
-	_generateDungeon = async (event, seed=randomID(12)) => {
+	_generateDungeon = async (event, seed=foundry.utils.randomID(12)) => {
 		const elem = event.target.closest(`#${MODULE.ID}-dialog`);
 		const generateBtn = elem.querySelector(`aside .button-group button[id="${MODULE.ID}-btn-generate"]`);
 
@@ -376,7 +376,7 @@ export default class DunGenTesting extends VueApplication {
 			else if (mapSize < 40 && tileSize > 70) return 70;
 			else return tileSize;
 		}
-		const response = await this.getMapFromAPI(mergeObject(this.generationOptions, {
+		const response = await this.getMapFromAPI(foundry.utils.mergeObject(this.generationOptions, {
 			tile_size: getTileSize()
 		}, { inplace: false}));
 
@@ -412,7 +412,7 @@ export default class DunGenTesting extends VueApplication {
 				src: `data:image/jpeg;charset=utf-8;base64,${response?.image_encoded}`
 			},
 			flags: {
-				[`${MODULE.ID}`]: mergeObject( {
+				[`${MODULE.ID}`]: foundry.utils.mergeObject( {
 					generationDetails: this.generationOptions,
 					image_url: `${MODULE.API.replace('/api', '')}/${response.image_url.replace('../', '')}`,
 				}, this._vue.store.mapDetails, { inplace: false })
@@ -471,7 +471,7 @@ export default class DunGenTesting extends VueApplication {
 		const realTileSize = parseInt(elem.querySelector('aside select[name="tile_size"]').value ?? 70);
 		if (this._vue.store.genType == 'cave') {
 			this.updateStatusText(MODULE.localize('dialog.status.getMap'));
-			const response = await this.getMapFromAPI(mergeObject(this.generationOptions, { layout: false }, { inplace: false }));
+			const response = await this.getMapFromAPI(foundry.utils.mergeObject(this.generationOptions, { layout: false }, { inplace: false }));
 			if (typeof response == 'undefined') return; // Kick out if unable to Get Image from API
 			this.sceneOptions.background.src = `data:image/jpeg;charset=utf-8;base64,${response.image_encoded}`;
 		}else if (this.generationOptions.max_size >= 40 || (this.generationOptions.max_size <= 16 && realTileSize > 70)) {
@@ -484,7 +484,7 @@ export default class DunGenTesting extends VueApplication {
         // Get Map Walls
         if (elem.querySelector('input[type="checkbox"][name="green_path"').checked) {
             this.updateStatusText(MODULE.localize('dialog.status.getWalls'));
-            this.sceneOptions.walls = (await this.getMapFromAPI(mergeObject(this.generationOptions, {
+            this.sceneOptions.walls = (await this.getMapFromAPI(foundry.utils.mergeObject(this.generationOptions, {
                 theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'original',
                 green_path: 'fvtt',
                 enable_furnishing: false,
@@ -501,11 +501,27 @@ export default class DunGenTesting extends VueApplication {
 		if (!fileDetails) return; // Kick out if unable to Create Image on Server
 
 		// Update Background Image Source
-		this.sceneOptions.background.src = fileDetails?.path ?? '';
+		const imagePath = fileDetails?.path ?? '';
+
+		// Check if running on Foundry V14 or newer
+		if (game.release.generation >= 14) {
+			// V14 Schema: Backgrounds are stored in embedded Level documents
+			this.sceneOptions.levels = [
+				{
+					name: "Base Level",
+					background: { src: imagePath }
+				}
+			];
+			// Clean up the old schema property so it doesn't cause validation warnings
+			delete this.sceneOptions.background;
+		} else {
+			// Pre-V14 Schema: Backgrounds are directly on the Scene object
+			this.sceneOptions.background.src = imagePath;
+		}
 
 		// Create Scene
 		this.updateStatusText(MODULE.localize('dialog.status.creatingScene'));
-		const scene = await Scene.create(mergeObject({ type: 'base' }, this.sceneOptions));
+		const scene = await Scene.create(foundry.utils.mergeObject({ type: 'base' }, this.sceneOptions));
 
 		// Open Scene Config Window
 		await scene.sheet.render(true);
