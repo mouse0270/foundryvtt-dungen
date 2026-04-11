@@ -46,9 +46,9 @@ export class VueApplication extends Application {
     async _activateCoreListeners(e) {
         super._activateCoreListeners(e);
         let t = e[0];
-        this._vue.app = createApp(mergeObject({
+        this._vue.app = createApp(foundry.utils.mergeObject({
             store: this._vue.store
-        }, mergeObject(pVue.helpers, {
+        }, foundry.utils.mergeObject(pVue.helpers, {
             mounted: function(e) {
                 Hooks.callAll("mountedVueApplication", this, e)
             },
@@ -130,7 +130,7 @@ export class VueFormApplication extends FormApplication {
                 s.forEach(e => {
                     let s = `${e}${t.element.documentName}`;
                     this._hookIds.push([s, Hooks.on(s, (e, t, s, i) => {
-                        e.parent == this.object && mergeObject(this._vue.store, e.parent.toObject(), {
+                        e.parent == this.object && foundry.utils.mergeObject(this._vue.store, e.parent.toObject(), {
                             performDeletions: !0
                         })
                     })])

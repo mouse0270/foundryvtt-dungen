@@ -49,7 +49,7 @@ Hooks.once('ready', async () => {
 		const title = game.i18n.format("DOCUMENT.Create", {type: label});
 
 		// Render the document creation form
-		const html = await renderTemplate("templates/sidebar/document-create.html", {
+		const html = await foundry.applications.handlebars.renderTemplate("templates/sidebar/document-create.html", {
 			folders,
 			name: data.name || game.i18n.format("DOCUMENT.New", {type: label}),
 			folder: data.folder,

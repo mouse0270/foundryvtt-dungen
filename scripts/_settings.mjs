@@ -92,7 +92,7 @@ Hooks.once('setup', async () => {
 		if (new Date(MODULE.setting('patreon_values').expiry) < (new Date()).setHours(0, 0, 0, 0)) {
 			ui.notifications.warn(`<strong>${MODULE.TITLE}</strong> ${MODULE.localize('notifications.token_expired')}`);
 			
-			MODULE.setting('patreon_values', mergeObject(MODULE.setting('patreon_values') ,{
+			MODULE.setting('patreon_values', foundry.utils.mergeObject(MODULE.setting('patreon_values') ,{
 				"token_expired": true,
 			}));
 		}		
