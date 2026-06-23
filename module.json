@@ -1,8 +1,8 @@
 {
 	"id": "foundryvtt-dungen",
 	"title": "DunGen",
-	"description": "DunGen will generate high resolution dungeons ready to use in Foundry VTT.",
-	"version": "1.1.1",
+	"description": "DunGen will generate high resolution dungeons and caves ready to use in Foundry VTT.",
+	"version": "1.2.0",
 	"compatibility": {
 		"minimum": 10,
 		"verified": 14

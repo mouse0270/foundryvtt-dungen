@@ -37,6 +37,8 @@
 				"name": "Theme",
 				"hint": "Theme - eight to choose from",
 				"choices": {
+					"sandstone": "Sandstone",
+					"basalt": "Basalt",
 					"original": "Original",
 					"ice_temple": "Ice Temple",
 					"stylized_gray": "Stylized Gray",

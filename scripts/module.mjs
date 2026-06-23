@@ -53,9 +53,11 @@ export default class DunGenTesting extends VueApplication {
     }
 
 	getThemes(genType) {
-		let themes = ['original']
+		let themes = ['sandstone']
 
 		if (genType == 'dungeon') themes = themes.concat([
+			"basalt",
+			"original",
 			"ice_temple",
 			"stylized_gray",
 			"black_white",
@@ -111,7 +113,7 @@ export default class DunGenTesting extends VueApplication {
 		let data = {
 			patreon_token: MODULE.setting('patreon_token'),
 			seed: elem.querySelector('aside input[type="text"][name="seed"]').value?.length > 0 ? elem.querySelector('aside input[type="text"][name="seed"]').value : seed,
-			theme: elem.querySelector('aside select[name="theme"]').value ?? 'original',
+			theme: elem.querySelector('aside select[name="theme"]').value ?? 'sandstone',
 			max_size: elem.querySelector('aside select[name="max_size"]').value ?? 16,
 			tile_size: elem.querySelector('aside select[name="tile_size"]').value ?? 70,
 			image_encoded: true
@@ -485,7 +487,7 @@ export default class DunGenTesting extends VueApplication {
         if (elem.querySelector('input[type="checkbox"][name="green_path"').checked) {
             this.updateStatusText(MODULE.localize('dialog.status.getWalls'));
             this.sceneOptions.walls = (await this.getMapFromAPI(foundry.utils.mergeObject(this.generationOptions, {
-                theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'original',
+                theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'sandstone',
                 green_path: 'fvtt',
                 enable_furnishing: false,
                 setting_themes: []
