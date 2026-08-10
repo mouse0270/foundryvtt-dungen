@@ -488,7 +488,7 @@ export default class DunGenTesting extends VueApplication {
         if (elem.querySelector('input[type="checkbox"][name="green_path"').checked) {
             this.updateStatusText(MODULE.localize('dialog.status.getWalls'));
             this.sceneOptions.walls = (await this.getMapFromAPI(foundry.utils.mergeObject(this.generationOptions, {
-                theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'sandstone',
+                theme_selected: this._vue.store.genType == 'dungeon' ? 'mask' : 'original',
                 green_path: 'fvtt',
                 enable_furnishing: false,
                 setting_themes: []
