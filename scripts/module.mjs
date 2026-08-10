@@ -54,6 +54,7 @@ export default class DunGenTesting extends VueApplication {
 
 	getThemes(genType) {
 		let themes = ['sandstone']
+		if (genType == 'cave') themes = ['original']
 
 		if (genType == 'dungeon') themes = themes.concat([
 			"basalt",
